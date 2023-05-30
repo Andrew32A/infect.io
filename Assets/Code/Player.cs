@@ -11,33 +11,29 @@ public class Player : MonoBehaviour
     public float scaleSpeed = 5f;
     private float currentScale = 1f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
+        // move player towards mouse
         Vector2 input = Input.mousePosition;
         Vector3 worldInput = cam.ScreenToWorldPoint(input);
         Vector3 newPosition = Vector3.MoveTowards(transform.position, worldInput, speed * Time.deltaTime);
         newPosition.z = transform.position.z;
-
-        transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(currentScale, currentScale, 1), Time.deltaTime * scaleSpeed);
-
         transform.position = newPosition;
 
+        // update size slowly
+        transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(currentScale, currentScale, 1), Time.deltaTime * scaleSpeed);
+
+        // split player
         if (Input.GetMouseButtonDown(0)) {
             transform.localScale += new Vector3(decrease, decrease, decrease);
         }
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        currentScale += 1f;
-
+        // check if player ate food
         if (other.gameObject.tag == "Food") {
+            currentScale += 1f;
             Destroy(other.gameObject);
         }
     }
