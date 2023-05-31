@@ -36,5 +36,9 @@ public class Player : MonoBehaviour
             currentScale += 1f;
             Destroy(other.gameObject);
         }
+
+        if (other.transform.localScale.magnitude > transform.localScale.magnitude) {
+            Destroy(gameObject);
+        }
     }
 }
